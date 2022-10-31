@@ -1,25 +1,52 @@
 import React, { useState, useEffect } from 'react'
+import { add } from '../store/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../store/productSlice';
+import { STATUSES } from '../store/productSlice';
 
 const Products = () => {
 
-    const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
+
+    const { data: products, status } = useSelector((state) => state.product);
+
+    // const [products, setProducts] = useState([]);
 
     useEffect(() => {
 
-        const fetchProducts = async () => {
+        dispatch(fetchProducts());
 
-            const res = await fetch('https://fakestoreapi.com/products');
 
-            const data = await res.json();
+        // const fetchProducts = async () => {
 
-            console.log(data);
+        //     const res = await fetch('https://fakestoreapi.com/products');
 
-            setProducts(data);
-        }
+        //     const data = await res.json();
 
-        fetchProducts();
+        //     console.log(data);
+
+        //     setProducts(data);
+        // }
+
+        // fetchProducts();
 
     }, []);
+
+    const handleAdd = (product) => {
+
+        dispatch(add(product));
+
+    };
+
+    if (status === STATUSES.LOADING) {
+
+        return <h4>Loading.....</h4>
+    }
+
+    if (status === STATUSES.ERROR) {
+
+        return <h2>Something went wrong</h2>
+    }
 
     return <div className='productsWrapper'>
 
@@ -33,7 +60,7 @@ const Products = () => {
 
                     <h5>{product.price}</h5>
 
-                    <button className='btn'>Add to Cart</button>
+                    <button onClick={() => handleAdd(product)} className='btn'>Add to Cart</button>
                 </div>
             ))
         }

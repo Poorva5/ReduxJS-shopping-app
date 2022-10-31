@@ -4,24 +4,30 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Navbar from './components/Navbar';
+import { Provider } from 'react-redux';
+import store from './store/store'
 
 function App() {
   return (
     <div className="App">
 
-      <BrowserRouter>
+      <Provider store={store}>
 
-        <Navbar />
+        <BrowserRouter>
 
-        <Routes>
+          <Navbar />
 
-          <Route path="/" element={<Home />}></Route>
+          <Routes>
 
-          <Route path="/cart" element={<Cart />}></Route>
+            <Route path="/" element={<Home />}></Route>
 
-        </Routes>
+            <Route path="/cart" element={<Cart />}></Route>
 
-      </BrowserRouter>
+          </Routes>
+
+        </BrowserRouter>
+
+      </Provider>
 
     </div>
   );
